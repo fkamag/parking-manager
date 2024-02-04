@@ -1,12 +1,16 @@
 package com.kamatech.parkingmanager.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.UUID;
 
+@Entity
+@Table(name = "TB_CAR")
 public class CarModel implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

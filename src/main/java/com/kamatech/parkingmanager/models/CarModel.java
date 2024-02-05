@@ -13,8 +13,10 @@ import java.util.UUID;
 @Table(name = "TB_CAR")
 public class CarModel implements Serializable {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID idCar;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long idCar;
+  @Column(nullable = false, unique = true)
+  private UUID idExternalCar;
   @Column(nullable = false, unique = true, length = 7)
   private String licensePlateCar;
   @Column(nullable = false, length = 70)
@@ -24,11 +26,11 @@ public class CarModel implements Serializable {
   @Column(nullable = false, length = 70)
   private String colorCar;
 
-  public UUID getIdCar() {
+  public Long getIdCar() {
     return idCar;
   }
 
-  public void setIdCar(UUID id_car) {
+  public void setIdCar(Long id_car) {
     this.idCar = id_car;
   }
 
@@ -62,5 +64,13 @@ public class CarModel implements Serializable {
 
   public void setColorCar(String colorCar) {
     this.colorCar = colorCar;
+  }
+
+  public UUID getIdExternalCar() {
+    return idExternalCar;
+  }
+
+  public void setIdExternalCar(UUID idExternalCar) {
+    this.idExternalCar = idExternalCar;
   }
 }

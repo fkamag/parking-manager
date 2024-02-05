@@ -4,9 +4,12 @@ import com.kamatech.parkingmanager.dtos.ParkingSpotDTO;
 import com.kamatech.parkingmanager.models.ParkingSpotModel;
 import com.kamatech.parkingmanager.services.ParkingSpotService;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +28,20 @@ public class ParkingSpotController {
 
   @PostMapping
   public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDTO parkingSpotDTO) {
-    var parkingSpotModel = new ParkingSpotModel();
-    BeanUtils.copyProperties(parkingSpotDTO, parkingSpotModel);
-    return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotModel));
+    try {
+
+      var parkingSpotModel = new ParkingSpotModel();
+      BeanUtils.copyProperties(parkingSpotDTO, parkingSpotModel);
+      UUID uuid = UUID.randomUUID();
+      parkingSpotModel.setIdExternalParkingSpot(uuid);
+      return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService
+          .save(parkingSpotModel));
+
+    } catch (DataIntegrityViolationException e) {
+      // Tratar a exceção de violação de chave única aqui
+      // Reverter a transação, se necessário
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
   }
 }

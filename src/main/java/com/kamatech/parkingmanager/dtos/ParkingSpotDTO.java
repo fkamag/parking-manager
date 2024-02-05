@@ -6,7 +6,6 @@ public class ParkingSpotDTO {
 
   @NotBlank
   private String parkingSpotNumber;
- @NotBlank
   private boolean isOccupied;
 
   public String getParkingSpotNumber() {

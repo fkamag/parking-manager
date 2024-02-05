@@ -15,19 +15,29 @@ public class ParkingSpotModel implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID idParkingSpot;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long idParkingSpot;
+  @Column(nullable = false, unique = true)
+  private UUID idExternalParkingSpot;
   @Column(nullable = false, unique = true, length = 10)
   private String parkingSpotNumber;
   @Column(nullable = false)
   private boolean isOccupied;
 
-  public UUID getIdParkingSpot() {
+  public Long getIdParkingSpot() {
     return idParkingSpot;
   }
 
-  public void setIdParkingSpot(UUID id_parking_spot) {
+  public void setIdParkingSpot(Long id_parking_spot) {
     this.idParkingSpot = id_parking_spot;
+  }
+
+  public UUID getIdExternalParkingSpot(UUID uuid) {
+    return idExternalParkingSpot;
+  }
+
+  public void setIdExternalParkingSpot(UUID idExternalParkingSpot) {
+    this.idExternalParkingSpot = idExternalParkingSpot;
   }
 
   public String getParkingSpotNumber() {

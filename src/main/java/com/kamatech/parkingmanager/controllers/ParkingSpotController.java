@@ -30,7 +30,7 @@ public class ParkingSpotController {
   public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDTO parkingSpotDTO) {
     try {
 
-      var parkingSpotModel = new ParkingSpotModel();
+      ParkingSpotModel parkingSpotModel = new ParkingSpotModel();
       BeanUtils.copyProperties(parkingSpotDTO, parkingSpotModel);
       UUID uuid = UUID.randomUUID();
       parkingSpotModel.setIdExternalParkingSpot(uuid);

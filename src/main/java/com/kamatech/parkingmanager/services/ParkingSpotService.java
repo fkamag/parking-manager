@@ -1,8 +1,11 @@
 package com.kamatech.parkingmanager.services;
 
+import com.kamatech.parkingmanager.dtos.ParkingSpotCreationDTO;
 import com.kamatech.parkingmanager.models.ParkingSpotModel;
 import com.kamatech.parkingmanager.repositories.ParkingSpotRepository;
 import jakarta.transaction.Transactional;
+import java.util.UUID;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,11 @@ public class ParkingSpotService {
   }
 
   @Transactional
-  public ParkingSpotModel save(ParkingSpotModel parkingSpotModel) {
+  public ParkingSpotModel saveParkingSpot(ParkingSpotCreationDTO parkingSpotCreationDTO) {
+    ParkingSpotModel parkingSpotModel = new ParkingSpotModel();
+    BeanUtils.copyProperties(parkingSpotCreationDTO, parkingSpotModel);
+    UUID uuid = UUID.randomUUID();
+    parkingSpotModel.setIdExternalParkingSpot(uuid);
     return parkingSpotRepository.save(parkingSpotModel);
   }
 

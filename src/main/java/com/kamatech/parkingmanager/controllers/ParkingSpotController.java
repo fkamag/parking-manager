@@ -4,8 +4,6 @@ import com.kamatech.parkingmanager.dtos.ParkingSpotCreationDTO;
 import com.kamatech.parkingmanager.models.ParkingSpotModel;
 import com.kamatech.parkingmanager.services.ParkingSpotService;
 import jakarta.validation.Valid;
-import java.util.UUID;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -39,10 +37,8 @@ public class ParkingSpotController {
                 parkingSpotCreationDTO.parkingSpotNumber()));
       }
 
-      ParkingSpotModel parkingSpotModel = new ParkingSpotModel();
-      BeanUtils.copyProperties(parkingSpotCreationDTO, parkingSpotModel);
-      UUID uuid = UUID.randomUUID();
-      parkingSpotModel.setIdExternalParkingSpot(uuid);
+      parkingSpotService.saveParkingSpot(parkingSpotCreationDTO);
+
       return ResponseEntity.status(HttpStatus.CREATED)
           .body("Vaga %s criada com sucesso".formatted(
               parkingSpotCreationDTO.parkingSpotNumber()));

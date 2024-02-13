@@ -4,6 +4,7 @@ import com.kamatech.parkingmanager.dtos.ParkingSpotCreationDTO;
 import com.kamatech.parkingmanager.models.ParkingSpotModel;
 import com.kamatech.parkingmanager.repositories.ParkingSpotRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class ParkingSpotService {
 
   public boolean existsByParkingSpotNumber(String parkingSpotNumber) {
     return parkingSpotRepository.existsByParkingSpotNumber(parkingSpotNumber);
+  }
+
+  public List<ParkingSpotModel> getAllParkingSpot() {
+    return parkingSpotRepository.findAll();
   }
 
 }

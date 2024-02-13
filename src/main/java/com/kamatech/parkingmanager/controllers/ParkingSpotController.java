@@ -1,15 +1,21 @@
 package com.kamatech.parkingmanager.controllers;
 
+import static com.kamatech.parkingmanager.dtos.ParkingSpotDtoMapper.ParkingSpotToDTO;
+
 import com.kamatech.parkingmanager.dtos.ParkingSpotCreationDTO;
+import com.kamatech.parkingmanager.dtos.ParkingSpotDTO;
 import com.kamatech.parkingmanager.models.ParkingSpotModel;
 import com.kamatech.parkingmanager.services.ParkingSpotService;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,5 +55,14 @@ public class ParkingSpotController {
       TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
+  }
+
+  @GetMapping
+  public ResponseEntity<List<ParkingSpotDTO>> getAllParkingSpot() {
+    List<ParkingSpotDTO> parkingSpotDTOList = new ArrayList<>();
+    for (ParkingSpotModel parkingSpot : parkingSpotService.getAllParkingSpot()) {
+      parkingSpotDTOList.add(ParkingSpotToDTO(parkingSpot));
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(parkingSpotDTOList);
   }
 }

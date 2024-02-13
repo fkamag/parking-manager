@@ -32,7 +32,7 @@ public class ParkingSpotModel implements Serializable {
     this.idParkingSpot = id_parking_spot;
   }
 
-  public UUID getIdExternalParkingSpot(UUID uuid) {
+  public UUID getIdExternalParkingSpot() {
     return idExternalParkingSpot;
   }
 

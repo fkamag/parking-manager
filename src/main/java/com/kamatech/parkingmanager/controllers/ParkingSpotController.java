@@ -1,11 +1,12 @@
 package com.kamatech.parkingmanager.controllers;
 
-import com.kamatech.parkingmanager.dtos.ParkingSpotDTO;
+import com.kamatech.parkingmanager.dtos.ParkingSpotCreationDTO;
 import com.kamatech.parkingmanager.models.ParkingSpotModel;
 import com.kamatech.parkingmanager.services.ParkingSpotService;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +23,29 @@ import org.springframework.web.bind.annotation.RestController;
 public class ParkingSpotController {
   final ParkingSpotService parkingSpotService;
 
+  @Autowired
   public ParkingSpotController(ParkingSpotService parkingSpotService) {
     this.parkingSpotService = parkingSpotService;
   }
 
   @PostMapping
-  public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDTO parkingSpotDTO) {
+  public ResponseEntity<String> saveParkingSpot(@RequestBody @Valid
+  ParkingSpotCreationDTO parkingSpotCreationDTO) {
     try {
+      if (parkingSpotService.existsByParkingSpotNumber(
+          parkingSpotCreationDTO.parkingSpotNumber())) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body("A vaga %s já existe".formatted(
+                parkingSpotCreationDTO.parkingSpotNumber()));
+      }
 
       ParkingSpotModel parkingSpotModel = new ParkingSpotModel();
-      BeanUtils.copyProperties(parkingSpotDTO, parkingSpotModel);
+      BeanUtils.copyProperties(parkingSpotCreationDTO, parkingSpotModel);
       UUID uuid = UUID.randomUUID();
       parkingSpotModel.setIdExternalParkingSpot(uuid);
-      return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService
-          .save(parkingSpotModel));
+      return ResponseEntity.status(HttpStatus.CREATED)
+          .body("Vaga %s criada com sucesso".formatted(
+              parkingSpotCreationDTO.parkingSpotNumber()));
 
     } catch (DataIntegrityViolationException e) {
       // Tratar a exceção de violação de chave única aqui

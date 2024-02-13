@@ -1,26 +1,12 @@
 package com.kamatech.parkingmanager.dtos;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
 
-public class ParkingSpotDTO {
+public record ParkingSpotDTO (
+    Long idParkingSpot,
+    UUID idExternalParkingSpot,
+    String parkingSpotNumber,
+    boolean isOccupied
+) {
 
-  @NotBlank
-  private String parkingSpotNumber;
-  private boolean isOccupied;
-
-  public String getParkingSpotNumber() {
-    return parkingSpotNumber;
-  }
-
-  public void setParkingSpotNumber(String parkingSpotNumber) {
-    this.parkingSpotNumber = parkingSpotNumber;
-  }
-
-  public boolean isOccupied() {
-    return isOccupied;
-  }
-
-  public void setOccupied(boolean occupied) {
-    isOccupied = occupied;
-  }
 }

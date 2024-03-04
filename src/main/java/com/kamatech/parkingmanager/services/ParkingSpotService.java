@@ -13,12 +13,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ParkingSpotService {
 
-  final ParkingSpotRepository parkingSpotRepository;
-
   @Autowired
+  private final ParkingSpotRepository parkingSpotRepository;
+
   public ParkingSpotService(ParkingSpotRepository parkingSpotRepository) {
     this.parkingSpotRepository = parkingSpotRepository;
   }
+
 
   @Transactional
   public ParkingSpotModel saveParkingSpot(ParkingSpotCreationDTO parkingSpotCreationDTO) {
